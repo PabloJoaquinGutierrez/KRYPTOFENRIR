@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRYPTOFENRIR - Diagnóstico Táctico</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            background-color: #050505;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        #terminal {
+            width: 100%;
+            max-width: 800px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .red { color: #ff3333; text-shadow: 0 0 5px rgba(255, 51, 51, 0.8); }
+        .yellow { color: #ffcc00; }
+        .cyan { color: #00ffff; }
+        .magenta { color: #ff00ff; }
+        .bold { font-weight: bold; }
+
+        pre {
+            font-family: 'Share Tech Mono', monospace;
+            white-space: pre-wrap;
+            line-height: 1.2;
+        }
+
+        .input-line {
+            display: flex;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .prompt { margin-right: 10px; }
+
+        input[type="text"], input[type="password"] {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            caret-color: #ff3333; /* El cursor de texto en rojo */
+        }
+
+        /* Efecto de parpadeo para el banner */
+        @keyframes glitch {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        .banner { animation: glitch 2s infinite; }
+    </style>
+</head>
+<body>
+
+    <div id="terminal">
+        <pre class="red bold banner">
+    ▌║█║▌│║▌│║▌║▌█║ K R Y P T O F E N R I R ▌│║▌║▌│║║▌█║▌
+    
+          /\/\      [ SISTEMA DE DIAGNÓSTICO OFENSIVO ]
+         /    \     [ MOTOR DE ENTROPÍA: ACTIVO       ]
+        /  ,,  \    [ BASE DE DATOS: EN LÍNEA         ]
+       /        \   
+      /___/\_\___\  "Tus defensas son una ilusión."
+        </pre>
+        
+        <div id="output">
+            <span class="yellow">[!] Iniciando enlace táctico...</span><br>
+            <span class="yellow">Advertencia: Ingresando a la zona de evaluación táctica.</span><br><br>
+        </div>
+
+        <div class="input-line">
+            <span class="bold prompt">Ingrese credencial objetivo ></span>
+            <input type="text" id="targetInput" autocomplete="off" autofocus>
+        </div>
+    </div>
+
+    <script>
+        // Diccionario de brechas simulado en memoria
+        const brechas = [
+            "123456", "password", "123456789", "12345", "12345678", 
+            "qwerty", "admin", "1234", "iloveyou", "1234567", 
+            "princesa", "futbol", "alianzalima", "ucsp2026", "sistemas"
+        ];
+
+        const inputField = document.getElementById('targetInput');
+        const outputDiv = document.getElementById('output');
+
+        // Función matemática para calcular entropía
+        function calcularEntropia(password) {
+            let R = 0;
+            if (/[a-z]/.test(password)) R += 26;
+            if (/[A-Z]/.test(password)) R += 26;
+            if (/[0-9]/.test(password)) R += 10;
+            if (/[^a-zA-Z0-9]/.test(password)) R += 32;
+
+            if (R === 0 || password.length === 0) return 0;
+            return password.length * Math.log2(R);
+        }
+
+        // Función para auditar contra el diccionario
+        function auditarDiccionario(password) {
+            return brechas.includes(password.toLowerCase());
+        }
+
+        // Función para pausar el código (simular escaneo)
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        // Evento principal: Cuando el usuario presiona ENTER
+        inputField.addEventListener('keypress', async function (e) {
+            if (e.key === 'Enter') {
+                const targetPassword = inputField.value;
+                if (!targetPassword) return;
+
+                // Bloquear el input temporalmente
+                inputField.disabled = true;
+                inputField.value = "";
+                
+                // Mostrar lo que el usuario ingresó
+                imprimirLinea(`> <span class="cyan">${targetPassword}</span>`);
+                
+                // Animación de cálculo
+                imprimirLinea(`<span class="cyan">[*] Calculando variables de entropía de Shannon...</span>`);
+                await sleep(800);
+                const entropia = calcularEntropia(targetPassword);
+                
+                imprimirLinea(`<span class="cyan">[*] Infiltrando registros de credenciales comprometidas...</span>`);
+                await sleep(800);
+                const vulnerada = auditarDiccionario(targetPassword);
+
+                // Generar reporte
+                let reporte = `<br><span class="bold magenta">=== REPORTE DE DAÑOS ===</span><br>`;
+                reporte += `<span class="cyan">>> Métrica de Entropía (Resistencia Estructural):</span> ${entropia.toFixed(2)} bits<br>`;
+                
+                if (entropia < 28) reporte += `   ├─ Estado: <span class="red">CRÍTICO</span>. Puede ser crackeada instantáneamente.<br>`;
+                else if (entropia < 50) reporte += `   ├─ Estado: <span class="yellow">DÉBIL</span>. Resistirá unos minutos contra hardware moderno.<br>`;
+                else if (entropia < 70) reporte += `   ├─ Estado: <span class="green">RAZONABLE</span>. Resistencia táctica aceptable.<br>`;
+                else reporte += `   ├─ Estado: <span class="cyan">MILITAR</span>. Su esperanza de vida supera milenios.<br>`;
+
+                reporte += `<br><span class="cyan">>> Auditoría de Exposición:</span><br>`;
+                if (vulnerada) {
+                    reporte += `   ├─ Resultado: <span class="red">[!] BRECHA CONFIRMADA [!]</span><br>`;
+                    reporte += `   └─ Análisis: La clave ha sido expuesta en la dark web.<br>`;
+                } else {
+                    reporte += `   ├─ Resultado: <span class="green">NEGATIVO</span><br>`;
+                    reporte += `   └─ Análisis: No se encontraron rastros en el registro de exposición local.<br>`;
+                }
+
+                reporte += `<br><span class="bold">VEREDICTO FINAL: </span>`;
+                if (vulnerada || entropia < 30) {
+                    reporte += `<span class="red">DEFENSA COMPROMETIDA. ABANDONE ESTA CREDENCIAL.</span>`;
+                } else if (entropia >= 50 && !vulnerada) {
+                    reporte += `<span class="green">SISTEMA SEGURO. MANTENGA EL PROTOCOLO.</span>`;
+                } else {
+                    reporte += `<span class="yellow">RIESGO MODERADO. AUMENTE LA COMPLEJIDAD DE LA CADENA.</span>`;
+                }
+                reporte += `<br>========================<br><br>`;
+
+                imprimirLinea(reporte);
+
+                // Desbloquear input y hacer scroll abajo
+                inputField.disabled = false;
+                inputField.focus();
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        });
+
+        function imprimirLinea(html) {
+            outputDiv.innerHTML += html + "<br>";
+        }
+    </script>
+</body>
+</html>
