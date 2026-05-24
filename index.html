@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KRYPTOFENRIR - Diagnóstico Ofensivo</title>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRYPTOFENRIR - Diagnóstico Ofensivo</title>
+    
+    <!-- AÑADE ESTA LÍNEA AQUÍ PARA EL ICONO DE LA PESTAÑA -->
+    <link rel="icon" type="image/png" href="logokf.png.png">
+
+    <!-- Fuentes: Creepster (Gótica/Terror) y Share Tech Mono (Terminal) -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- ... resto del código ... -->
     <!-- Fuentes: Creepster (Gótica/Terror) y Share Tech Mono (Terminal) -->
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
@@ -138,12 +149,12 @@
         }
 
         /* ANIMACIONES Y EFECTOS PSICOLÓGICOS */
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            14% { transform: scale(1.05); }
-            28% { transform: scale(1); }
-            42% { transform: scale(1.05); }
-            70% { transform: scale(1); }
+       @keyframes heartbeat {
+            0% { transform: scale(1); opacity: 1; }
+            14% { transform: scale(1.05); opacity: 0.3; } /* El lobo se agranda y casi desaparece (30% visible) */
+            28% { transform: scale(1); opacity: 1; }
+            42% { transform: scale(1.05); opacity: 0.3; } /* Segundo latido rápido, se vuelve a desvanecer */
+            70% { transform: scale(1); opacity: 1; }
         }
 
         @keyframes glitch-anim {
