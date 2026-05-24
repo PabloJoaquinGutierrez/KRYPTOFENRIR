@@ -55,7 +55,8 @@
             width: 350px;
             height: 350px;
             margin-bottom: 40px;
-            animation: heartbeat 2s infinite;
+            /* Cambiamos el tiempo a 4s y añadimos ease-in-out para que sea fluido */
+            animation: heartbeat 4s ease-in-out infinite;
         }
 
         .logo-container img {
@@ -151,10 +152,8 @@
         /* ANIMACIONES Y EFECTOS PSICOLÓGICOS */
        @keyframes heartbeat {
             0% { transform: scale(1); opacity: 1; }
-            14% { transform: scale(1.05); opacity: 0.3; } /* El lobo se agranda y casi desaparece (30% visible) */
-            28% { transform: scale(1); opacity: 1; }
-            42% { transform: scale(1.05); opacity: 0.3; } /* Segundo latido rápido, se vuelve a desvanecer */
-            70% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.2; } /* Máxima expansión y casi transparente */
+            100% { transform: scale(1); opacity: 1; } /* Vuelve a la normalidad */
         }
 
         @keyframes glitch-anim {
