@@ -3,37 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRYPTOFENRIR - Diagnóstico Táctico</title>
+    <title>KRYPTOFENRIR - Diagnóstico Ofensivo</title>
+    <!-- Fuentes: Creepster (Gótica/Terror) y Share Tech Mono (Terminal) -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-        body {
-            background-color: #050505;
-            color: #00ff00;
-            font-family: 'Share Tech Mono', monospace;
+        /* CONFIGURACIÓN BASE */
+        body, html {
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            color: #d3d3d3;
+            font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
         }
 
-        #terminal {
-            width: 100%;
-            max-width: 800px;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        /* COLORES TÁCTICOS */
+        .red { color: #ff0000; text-shadow: 0 0 8px rgba(255, 0, 0, 0.8); }
+        .dark-red { color: #8b0000; }
+        .green { color: #00ff00; text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); }
+        .yellow { color: #ffcc00; }
+        .white { color: #ffffff; }
+        .bold { font-weight: bold; }
+
+        /* FASE 1: PANTALLA DE ARRANQUE */
+        #boot-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 0.5s ease;
         }
 
-        .red { color: #ff3333; text-shadow: 0 0 5px rgba(255, 51, 51, 0.8); }
-        .yellow { color: #ffcc00; }
-        .cyan { color: #00ffff; }
-        .magenta { color: #ff00ff; }
-        .bold { font-weight: bold; }
+        .logo-container {
+            width: 350px;
+            height: 350px;
+            margin-bottom: 40px;
+            animation: heartbeat 2s infinite;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px #8b0000);
+        }
+
+        #start-btn {
+            background: transparent;
+            border: 2px solid #8b0000;
+            color: #ff0000;
+            font-family: 'Creepster', cursive;
+            font-size: 32px;
+            padding: 15px 30px;
+            cursor: pointer;
+            text-shadow: 0 0 10px #ff0000;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        #start-btn:hover {
+            background-color: rgba(139, 0, 0, 0.2);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* FASE 2: TERMINAL TÁCTICA */
+        #terminal-screen {
+            display: none; /* Se oculta hasta el inicio */
+            position: relative;
+            min-height: 100vh;
+            padding: 40px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        /* MARCA DE AGUA (EL LOBO OBSERVANDO) */
+        .watermark {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw; height: 80vh;
+            background-image: url('logokf.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.08; /* Muy tenue, casi fantasmal */
+            pointer-events: none;
+            z-index: -1;
+            filter: grayscale(100%) sepia(100%) hue-rotate(315deg) saturate(500%);
+        }
+
+        /* CONTENEDOR PRINCIPAL DE TEXTO */
+        .console-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
 
         pre {
             font-family: 'Share Tech Mono', monospace;
             white-space: pre-wrap;
             line-height: 1.2;
+            margin-bottom: 20px;
         }
 
         .input-line {
@@ -42,145 +121,252 @@
             align-items: center;
         }
 
-        .prompt { margin-right: 10px; }
+        .prompt { margin-right: 15px; font-size: 18px; color: #8b0000; }
 
         input[type="text"], input[type="password"] {
             background: transparent;
             border: none;
-            color: #00ff00;
+            border-bottom: 1px solid #8b0000;
+            color: #ff0000;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 16px;
+            font-size: 18px;
             width: 100%;
             outline: none;
-            caret-color: #ff3333; /* El cursor de texto en rojo */
+            caret-color: #ff0000;
+            padding-bottom: 5px;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
 
-        /* Efecto de parpadeo para el banner */
-        @keyframes glitch {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
+        /* ANIMACIONES Y EFECTOS PSICOLÓGICOS */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.05); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.05); }
+            70% { transform: scale(1); }
         }
-        .banner { animation: glitch 2s infinite; }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0) }
+            20% { transform: translate(-5px, 5px) }
+            40% { transform: translate(-5px, -5px) }
+            60% { transform: translate(5px, 5px) }
+            80% { transform: translate(5px, -5px) }
+            100% { transform: translate(0) }
+        }
+
+        .glitch { animation: glitch-anim 0.2s 3; }
+
+        @keyframes flash-blood {
+            0% { background-color: rgba(255, 0, 0, 0.6); }
+            100% { background-color: #000000; }
+        }
+
+        .critical-flash { animation: flash-blood 0.8s ease-out; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        
+        .shake-screen { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+
     </style>
 </head>
 <body>
 
-    <div id="terminal">
-        <pre class="red bold banner">
-    ▌║█║▌│║▌│║▌║▌█║ K R Y P T O F E N R I R ▌│║▌║▌│║║▌█║▌
-    
-          /\/\      [ SISTEMA DE DIAGNÓSTICO OFENSIVO ]
-         /    \     [ MOTOR DE ENTROPÍA: ACTIVO       ]
-        /  ,,  \    [ BASE DE DATOS: EN LÍNEA         ]
-       /        \   
-      /___/\_\___\  "Tus defensas son una ilusión."
-        </pre>
-        
-        <div id="output">
-            <span class="yellow">[!] Iniciando enlace táctico...</span><br>
-            <span class="yellow">Advertencia: Ingresando a la zona de evaluación táctica.</span><br><br>
+    <!-- PANTALLA DE ARRANQUE -->
+    <div id="boot-screen">
+        <div class="logo-container">
+            <img src="logokf.png" alt="Logo KRYPTOFENRIR">
         </div>
+        <button id="start-btn">[ INICIAR DIAGNÓSTICO OFENSIVO ]</button>
+    </div>
 
-        <div class="input-line">
-            <span class="bold prompt">Ingrese credencial objetivo ></span>
-            <input type="text" id="targetInput" autocomplete="off" autofocus>
+    <!-- TERMINAL TÁCTICA -->
+    <div id="terminal-screen">
+        <div class="watermark"></div>
+        <div class="console-container" id="console-container">
+            
+            <!-- EL BANNER ASCII CON TUS CORRECCIONES -->
+            <pre class="red bold">
+    |||||||||||||| K R Y P T O F E N R I R ||||||||||||||
+
+        _  __ _____    [ SISTEMA DE DIAGNÓSTICO OFENSIVO ]
+       | |/ /|  ___|   [ MOTOR DE ENTROPÍA: ACTIVO       ]
+       | ' / | |_      [ BASE DE DATOS: EN LÍNEA         ]
+       | . \ |  _|     
+       |_|\_\|_|       "Tus defensas son una ilusión."
+
+    <span style="font-size: 11px; letter-spacing: 1px; color: #a9a9a9;">Software de Pablo Joaquin Gutierrez Pilco</span>
+            </pre>
+            
+            <div id="output">
+                <span class="red">[+] ESTADO:</span> Conectado a la red global de amenazas.<br>
+                <span class="red">[+] ADVERTENCIA:</span> Toda credencial ingresada será sometida a asedio.<br><br>
+            </div>
+
+            <div class="input-line">
+                <span class="bold prompt">Objetivo_A_Destruir ></span>
+                <input type="text" id="targetInput" autocomplete="off" autofocus>
+            </div>
         </div>
     </div>
 
     <script>
-        // Diccionario de brechas simulado en memoria
+        // DICCIONARIO DE BRECHAS (200 NORDPASS + 3 LOCALES)
         const brechas = [
-            "123456", "password", "123456789", "12345", "12345678", 
-            "qwerty", "admin", "1234", "iloveyou", "1234567", 
-            "princesa", "futbol", "alianzalima", "ucsp2026", "sistemas"
+            "123456", "admin", "12345678", "123456789", "12345", "password", "Aa123456",
+            "1234567890", "Pass@123", "admin123", "1234567", "123123", "111111", "12345678910",
+            "P@ssw0rd", "Password", "Aa@123456", "admintelecom", "Admin@123", "112233",
+            "102030", "654321", "abcd1234", "abc123", "qwerty123", "Abcd@1234", "Pass@1234",
+            "11223344", "admin@123", "87654321", "987654321", "qwerty", "123123123", "1q2w3e4r",
+            "Aa112233", "12341234", "qwertyuiop", "11111111", "Admin", "Password@123",
+            "asd123", "Aboy1234", "123321", "admin1", "Admin123", "Demo@123", "1q2w3e4r5t",
+            "admin1234", "aa123456", "121212", "asdf1234", "888888", "Abcd1234", "123456789",
+            "guru123456", "666666", "Welcome@123", "guest", "Password1", "123456789a",
+            "Kapler123", "administrator", "1122334455", "Test@123", "qwer1234", "asdfghjkl",
+            "Global123@", "10203040", "1234qwer", "India@123", "Abcd@123", "1qaz2wsx",
+            "88888888", "123qwe", "12345678a", "secret", "Aa123123", "12344321", "123456aA@",
+            "123456a", "a123456", "202020", "1234abcd", "admin123456", "qwe123", "101010",
+            "222222", "12121212", "welcome", "abc12345", "Abc@1234", "admin12345", "Qwerty123",
+            "12345678900", "123654", "555555", "Aa123456789", "1111111111", "12345678901",
+            "q1w2e3r4", "password123", "Heslo1234", "22446688", "Abc12345", "vodafone",
+            "999999", "bismillah", "a123456789", "Password123", "azerty", "user1234",
+            "1234567891", "1234512345", "adminisp", "1234567899", "P@$$w0rd", "Aa12345678",
+            "Passw0rd", "zxcvbnm", "adminadmin", "qwerty12345", "gvt12345", "minecraft",
+            "abcd@1234", "pakistan", "ADMIN", "10203", "Welcome1", "theworldinyourhand",
+            "aabb1122", "test123", "Asdf1234", "54321", "1111111", "a1b2c3d4", "password1",
+            "student", "Abc@12345", "Aa102030", "Pass@12345", "135790", "123abc", "cisco",
+            "11111", "Aa@12345", "111111111", "p@ssw0rd", "lol123456", "147258369",
+            "123456Aa", "Aa@1234567", "Admin@1234", "1234554321", "124578", "12qwaszx",
+            "Abc@123", "a12345678", "aa112233", "qwer4321", "a1234567", "Qwerty@123",
+            "12345679", "Ab123456", "Aa@123456789", "Abcd1234@", "123qweasd", "Admin1234",
+            "pakistan123", "A123456a", "qwerty1234", "1234567a", "abc123456", "turktelekom",
+            "test1234", "999999999", "123456788", "Aaa111", "contraseña", "7654321",
+            "1qazxsw2", "Password@1", "asdasd", "aaaaaa", "qwerty123456", "246810",
+            "11112222", "aaaa1111", "Abc123", "q1w2e3r4t5", "987654", "aa123123", "azerty123",
+            "Aa1234567", "abc@123", "changeme", "12345678@", "P@55w0rd", "asd12345",
+            "zxcvbnm123", "123admin", "alianzalima", "ucsp2026", "sistemas"
         ];
 
+        // LÓGICA DE TRANSICIÓN ARRANQUE -> TERMINAL
+        const bootScreen = document.getElementById('boot-screen');
+        const terminalScreen = document.getElementById('terminal-screen');
+        const startBtn = document.getElementById('start-btn');
         const inputField = document.getElementById('targetInput');
         const outputDiv = document.getElementById('output');
 
-        // Función matemática para calcular entropía
+        startBtn.addEventListener('click', () => {
+            bootScreen.classList.add('glitch');
+            setTimeout(() => {
+                bootScreen.style.opacity = '0';
+                setTimeout(() => {
+                    bootScreen.style.display = 'none';
+                    terminalScreen.style.display = 'block';
+                    inputField.focus();
+                }, 500);
+            }, 600);
+        });
+
+        // FUNCIONES MATEMÁTICAS
         function calcularEntropia(password) {
             let R = 0;
             if (/[a-z]/.test(password)) R += 26;
             if (/[A-Z]/.test(password)) R += 26;
             if (/[0-9]/.test(password)) R += 10;
             if (/[^a-zA-Z0-9]/.test(password)) R += 32;
-
             if (R === 0 || password.length === 0) return 0;
             return password.length * Math.log2(R);
         }
 
-        // Función para auditar contra el diccionario
         function auditarDiccionario(password) {
             return brechas.includes(password.toLowerCase());
         }
 
-        // Función para pausar el código (simular escaneo)
         const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        // Evento principal: Cuando el usuario presiona ENTER
+        // EFECTO DE ESCRITURA EN TIEMPO REAL
+        async function typewriterEffect(htmlString) {
+            const tempDiv = document.createElement('div');
+            outputDiv.appendChild(tempDiv);
+            tempDiv.innerHTML = htmlString;
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        // CONTROL DE EVENTOS DE LA TERMINAL
         inputField.addEventListener('keypress', async function (e) {
             if (e.key === 'Enter') {
                 const targetPassword = inputField.value;
                 if (!targetPassword) return;
 
-                // Bloquear el input temporalmente
                 inputField.disabled = true;
                 inputField.value = "";
                 
-                // Mostrar lo que el usuario ingresó
-                imprimirLinea(`> <span class="cyan">${targetPassword}</span>`);
+                await typewriterEffect(`> <span class="white">${targetPassword}</span><br>`);
                 
-                // Animación de cálculo
-                imprimirLinea(`<span class="cyan">[*] Calculando variables de entropía de Shannon...</span>`);
-                await sleep(800);
+                await sleep(400);
+                await typewriterEffect(`<span class="dark-red">[!] EJECUTANDO DESCOMPOSICIÓN DE ENTROPÍA...</span><br>`);
+                
+                // Simular barra de carga
+                const loader = document.createElement('span');
+                loader.className = "red bold";
+                outputDiv.appendChild(loader);
+                for(let i=0; i<15; i++){
+                    loader.innerHTML += "█";
+                    await sleep(50);
+                }
+                loader.innerHTML += " [COMPLETADO]<br>";
+
                 const entropia = calcularEntropia(targetPassword);
                 
-                imprimirLinea(`<span class="cyan">[*] Infiltrando registros de credenciales comprometidas...</span>`);
+                await typewriterEffect(`<span class="dark-red">[!] AUDITANDO ABISMO DE BRECHAS LOCALES...</span><br>`);
                 await sleep(800);
                 const vulnerada = auditarDiccionario(targetPassword);
 
-                // Generar reporte
-                let reporte = `<br><span class="bold magenta">=== REPORTE DE DAÑOS ===</span><br>`;
-                reporte += `<span class="cyan">>> Métrica de Entropía (Resistencia Estructural):</span> ${entropia.toFixed(2)} bits<br>`;
+                // GENERACIÓN DEL REPORTE PSICOLÓGICO
+                let reporte = `<br><span class="bold red" style="font-size:22px;">=== DIAGNÓSTICO DE COLAPSO ===</span><br>`;
+                reporte += `<span class="white">>> Resistencia Estructural:</span> ${entropia.toFixed(2)} bits<br>`;
                 
-                if (entropia < 28) reporte += `   ├─ Estado: <span class="red">CRÍTICO</span>. Puede ser crackeada instantáneamente.<br>`;
-                else if (entropia < 50) reporte += `   ├─ Estado: <span class="yellow">DÉBIL</span>. Resistirá unos minutos contra hardware moderno.<br>`;
-                else if (entropia < 70) reporte += `   ├─ Estado: <span class="green">RAZONABLE</span>. Resistencia táctica aceptable.<br>`;
-                else reporte += `   ├─ Estado: <span class="cyan">MILITAR</span>. Su esperanza de vida supera milenios.<br>`;
+                if (entropia < 28) reporte += `   ├─ Integridad: <span class="red bold">CRÍTICA</span>. Destrucción inminente.<br>`;
+                else if (entropia < 50) reporte += `   ├─ Integridad: <span class="yellow">DÉBIL</span>. Fisuras estructurales detectadas.<br>`;
+                else if (entropia < 70) reporte += `   ├─ Integridad: <span class="green">ESTABLE</span>. Tensión manejable.<br>`;
+                else reporte += `   ├─ Integridad: <span class="green bold">GRADO MILITAR</span>. Blindaje total.<br>`;
 
-                reporte += `<br><span class="cyan">>> Auditoría de Exposición:</span><br>`;
+                reporte += `<br><span class="white">>> Búsqueda en Registros Expuestos:</span><br>`;
+                
+                // ACTIVAR TERROR SI ES VULNERABLE
                 if (vulnerada) {
-                    reporte += `   ├─ Resultado: <span class="red">[!] BRECHA CONFIRMADA [!]</span><br>`;
-                    reporte += `   └─ Análisis: La clave ha sido expuesta en la dark web.<br>`;
+                    reporte += `   ├─ Estado: <span class="red bold flash">[!] BRECHA CATASTRÓFICA CONFIRMADA [!]</span><br>`;
+                    reporte += `   └─ Análisis: La credencial es pública. Enemigo ya infiltrado.<br>`;
+                    document.body.classList.add('critical-flash');
+                    document.getElementById('console-container').classList.add('shake-screen');
+                    setTimeout(() => {
+                        document.body.classList.remove('critical-flash');
+                        document.getElementById('console-container').classList.remove('shake-screen');
+                    }, 800);
                 } else {
-                    reporte += `   ├─ Resultado: <span class="green">NEGATIVO</span><br>`;
-                    reporte += `   └─ Análisis: No se encontraron rastros en el registro de exposición local.<br>`;
+                    reporte += `   ├─ Estado: <span class="green">SISTEMA LIMPIO</span><br>`;
+                    reporte += `   └─ Análisis: No existen registros de compromiso en la Dark Web.<br>`;
                 }
 
-                reporte += `<br><span class="bold">VEREDICTO FINAL: </span>`;
+                reporte += `<br><span class="bold" style="font-size:20px;">DICTAMEN: </span>`;
                 if (vulnerada || entropia < 30) {
-                    reporte += `<span class="red">DEFENSA COMPROMETIDA. ABANDONE ESTA CREDENCIAL.</span>`;
+                    reporte += `<span class="red bold">DEFENSA ANIQUILADA. ABANDONE LA POSICIÓN.</span>`;
                 } else if (entropia >= 50 && !vulnerada) {
-                    reporte += `<span class="green">SISTEMA SEGURO. MANTENGA EL PROTOCOLO.</span>`;
+                    reporte += `<span class="green bold">ACCESO PROTEGIDO. MANTENGA LA LÍNEA.</span>`;
                 } else {
-                    reporte += `<span class="yellow">RIESGO MODERADO. AUMENTE LA COMPLEJIDAD DE LA CADENA.</span>`;
+                    reporte += `<span class="yellow bold">ALERTA AMARILLA. REFUERCE LA ESTRUCTURA.</span>`;
                 }
-                reporte += `<br>========================<br><br>`;
+                reporte += `<br><span class="dark-red">==========================================</span><br><br>`;
 
-                imprimirLinea(reporte);
+                await typewriterEffect(reporte);
 
-                // Desbloquear input y hacer scroll abajo
                 inputField.disabled = false;
                 inputField.focus();
-                window.scrollTo(0, document.body.scrollHeight);
             }
         });
-
-        function imprimirLinea(html) {
-            outputDiv.innerHTML += html + "<br>";
-        }
     </script>
 </body>
 </html>
