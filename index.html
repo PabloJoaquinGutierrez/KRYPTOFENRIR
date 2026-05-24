@@ -295,6 +295,17 @@
             return brechas.includes(password.toLowerCase());
         }
 
+        // --- NUEVA CAPA: CORTAFUEGOS DE INTEGRIDAD ESTRUCTURAL ---
+        function auditarEstructura(password) {
+            if (password.includes(' ')) return "Brecha crítica: Espacios en blanco detectados.";
+            if (password.length < 8) return "Blindaje insuficiente: Longitud menor a 8 posiciones.";
+            if (!/[A-Z]/.test(password)) return "Vulnerabilidad de formato: Ausencia de caracteres en mayúscula.";
+            if (!/[a-z]/.test(password)) return "Vulnerabilidad de formato: Ausencia de caracteres en minúscula.";
+            if (!/[0-9]/.test(password)) return "Falla de cifrado: Carencia de variables numéricas.";
+            if (!/[^a-zA-Z0-9\s]/.test(password)) return "Estructura plana: Ausencia de símbolos de anclaje (caracteres especiales).";
+            return "OK";
+        }
+
         const sleep = ms => new Promise(r => setTimeout(r, ms));
 
         // EFECTO DE ESCRITURA EN TIEMPO REAL
@@ -317,7 +328,7 @@
                 await typewriterEffect(`> <span class="white">${targetPassword}</span><br>`);
                 
                 await sleep(400);
-                await typewriterEffect(`<span class="dark-red">[!] EJECUTANDO DESCOMPOSICIÓN DE ENTROPÍA...</span><br>`);
+                await typewriterEffect(`<span class="dark-red">[!] EJECUTANDO DESCOMPOSICIÓN DE ENTROPÍA Y ESTRUCTURA...</span><br>`);
                 
                 // Simular barra de carga
                 const loader = document.createElement('span');
@@ -329,7 +340,10 @@
                 }
                 loader.innerHTML += " [COMPLETADO]<br>";
 
+                // EVALUACIÓN DE LAS 3 CAPAS
                 const entropia = calcularEntropia(targetPassword);
+                const analisisEstructural = auditarEstructura(targetPassword);
+                const fallaEstructural = (analisisEstructural !== "OK");
                 
                 await typewriterEffect(`<span class="dark-red">[!] AUDITANDO ABISMO DE BRECHAS LOCALES...</span><br>`);
                 await sleep(800);
@@ -337,34 +351,41 @@
 
                 // GENERACIÓN DEL REPORTE PSICOLÓGICO
                 let reporte = `<br><span class="bold red" style="font-size:22px;">=== DIAGNÓSTICO DE COLAPSO ===</span><br>`;
-                reporte += `<span class="white">>> Resistencia Estructural:</span> ${entropia.toFixed(2)} bits<br>`;
+                reporte += `<span class="white">>> Resistencia Matemática:</span> ${entropia.toFixed(2)} bits<br>`;
                 
-                if (entropia < 28) reporte += `   ├─ Integridad: <span class="red bold">CRÍTICA</span>. Destrucción inminente.<br>`;
+                // DICTAMEN DE LA INTEGRIDAD ESTRUCTURAL
+                if (fallaEstructural) reporte += `   ├─ Integridad: <span class="red bold">CRÍTICA</span>. ${analisisEstructural}<br>`;
+                else if (entropia < 28) reporte += `   ├─ Integridad: <span class="red bold">CRÍTICA</span>. Destrucción inminente.<br>`;
                 else if (entropia < 50) reporte += `   ├─ Integridad: <span class="yellow">DÉBIL</span>. Fisuras estructurales detectadas.<br>`;
                 else if (entropia < 70) reporte += `   ├─ Integridad: <span class="green">ESTABLE</span>. Tensión manejable.<br>`;
                 else reporte += `   ├─ Integridad: <span class="green bold">GRADO MILITAR</span>. Blindaje total.<br>`;
 
                 reporte += `<br><span class="white">>> Búsqueda en Registros Expuestos:</span><br>`;
                 
-                // ACTIVAR TERROR SI ES VULNERABLE
+                // REPORTE DE BRECHAS
                 if (vulnerada) {
                     reporte += `   ├─ Estado: <span class="red bold flash">[!] BRECHA CATASTRÓFICA CONFIRMADA [!]</span><br>`;
                     reporte += `   └─ Análisis: La credencial es pública. Enemigo ya infiltrado.<br>`;
+                } else {
+                    reporte += `   ├─ Estado: <span class="green">SISTEMA LIMPIO</span><br>`;
+                    reporte += `   └─ Análisis: No existen registros de compromiso en la Dark Web.<br>`;
+                }
+
+                // ACTIVAR TERROR FÍSICO EN PANTALLA (FLASH Y TEMBLOR)
+                if (vulnerada || fallaEstructural) {
                     document.body.classList.add('critical-flash');
                     document.getElementById('console-container').classList.add('shake-screen');
                     setTimeout(() => {
                         document.body.classList.remove('critical-flash');
                         document.getElementById('console-container').classList.remove('shake-screen');
                     }, 800);
-                } else {
-                    reporte += `   ├─ Estado: <span class="green">SISTEMA LIMPIO</span><br>`;
-                    reporte += `   └─ Análisis: No existen registros de compromiso en la Dark Web.<br>`;
                 }
 
+                // VEREDICTO FINAL TÁCTICO
                 reporte += `<br><span class="bold" style="font-size:20px;">DICTAMEN: </span>`;
-                if (vulnerada || entropia < 30) {
+                if (vulnerada || fallaEstructural || entropia < 30) {
                     reporte += `<span class="red bold">DEFENSA ANIQUILADA. ABANDONE LA POSICIÓN.</span>`;
-                } else if (entropia >= 50 && !vulnerada) {
+                } else if (entropia >= 50 && !vulnerada && !fallaEstructural) {
                     reporte += `<span class="green bold">ACCESO PROTEGIDO. MANTENGA LA LÍNEA.</span>`;
                 } else {
                     reporte += `<span class="yellow bold">ALERTA AMARILLA. REFUERCE LA ESTRUCTURA.</span>`;
